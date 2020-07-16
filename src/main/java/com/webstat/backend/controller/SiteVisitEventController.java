@@ -10,18 +10,18 @@ import javax.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.webstat.backend.exception.ResourceNotFoundException;
+
 import com.webstat.backend.model.SiteVisitEvent;
 import com.webstat.backend.model.SiteVisitEventRepository;
 
@@ -42,7 +42,7 @@ public class SiteVisitEventController {
 		return siteVisitEventRepository.findAll();
 	}
 	
-	//2a Общее количество посещений за указанный период
+	
 	@CrossOrigin(origins = "*")
 	@GetMapping("/site-visit-events/{startdate}/{enddate}")
 	public Map<String, String> getVisitsByPeriod(@PathVariable(value = "startdate") @DateTimeFormat(pattern="yyyy-MM-dd") Date startdate, 
@@ -54,20 +54,11 @@ public class SiteVisitEventController {
 		m.put("uniqueVisitorsByPeriod", "" + siteVisitEventRepository.findUniqueVisitorsByPeriod(startdate, enddate));
 		m.put("regularVisitorsByPeriod", "" + siteVisitEventRepository.findRegularVisitorsByPeriod(startdate, enddate));
 		return m;
-//			throws ResourceNotFoundException {
-//		
-//		
-//		SiteVisitEvent siteVisitEvent = siteVisitEventRepository.findById(eventID)
-//				.orElseThrow(() -> new ResourceNotFoundException("Statistics is empty for the period from :: " + startdate + " to:: " +enddate));
-//		
-//		logger.debug(siteVisitEvent.toString());
-//		return ResponseEntity.ok().body(siteVisitEvent);
+
 	
 	}
 
-	//1 Создание события посещения сайта пользователем и
-	//ответ: a.Общее количество посещений за текущие сутки;
-	//b.Количество уникальных пользователей за текущие сутки.
+
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@PostMapping("/site-visit-event")
 	public Map<String, String> createSiteVisitEvent(@Valid @RequestBody SiteVisitEvent siteVisitEvent) {
